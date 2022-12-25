@@ -1,0 +1,129 @@
+package cm;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+
+
+/**
+ * Class used to configure the application
+ */
+
+@org.springframework.context.annotation.Configuration
+public class Configuration {	
+	private static Logger logger = LoggerFactory.getLogger(Configuration.class);
+
+
+    /**
+     * Feeds some configuration information from environment variables.
+     * @return a DataSource object
+     * https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html (Java 8)
+     */
+    @Bean
+    DataSource getDataSource() {
+        logger.info("Entering getDataSource()");
+        String dbURL = null;
+        // DB_URL contains the value of the JDBC URL
+        // jdbc:postgresql://<hostname>:<port>/<databasename>
+        // 5432 is the port used by the Docker service,
+        // 5433	is used by the instance of PostgreSQL used for testing. 		
+        String dbUSERNAME = null ;
+        String dbPASSWORD = null ;
+        boolean dockerIsBeingUsed = false;
+        String dbJdbcRootFile = "DB_JDBC_ROOT_FILE";
+        String postgresDbFile = "POSTGRES_DB_FILE";
+        String postgresUserFile = "POSTGRES_USER_FILE";
+        String postgresPasswordFile = "POSTGRES_PASSWORD_FILE";
+        String dbUsername = "DB_USERNAME";
+        String dbPassword = "DB_PASSWORD";
+        String dbName = "DB_NAME";
+
+        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.postgresql.Driver");
+
+        // Case 1 : A Docker environment is being used		
+        // Case 2 : the components are being run outside of Docker				
+        
+        if (System.getenv(postgresUserFile) != null)
+        {
+            dockerIsBeingUsed = true;
+            dbUSERNAME = extractDockerSecretFromFile(System.getenv(postgresUserFile));
+        } else
+        {
+            dbUSERNAME = System.getenv(dbUsername);
+        }
+
+        if (System.getenv(postgresPasswordFile) != null)
+        {
+            dbPASSWORD = extractDockerSecretFromFile(System.getenv(postgresPasswordFile));
+        } else
+        {
+            dbPASSWORD = System.getenv(dbPassword);
+        }
+
+        if (System.getenv(postgresDbFile) != null && System.getenv(dbJdbcRootFile) != null)
+        {
+            dbURL = extractDockerSecretFromFile(System.getenv(dbJdbcRootFile)) + extractDockerSecretFromFile(System.getenv(postgresDbFile));
+        } else
+        {
+            dbURL =  System.getenv(dbJdbcRootFile) + System.getenv(dbName);
+        }
+
+        if (dockerIsBeingUsed)
+        {
+            logger.info("Use of the Docker PostgreSQL service");
+        } else
+        {
+            logger.info("Use of the installed PostgreSQL database");
+        }
+
+        // Todo :  to remove when debugged
+        logInfoEnabled(logger, "System.getenv(POSTGRES_USER_FILE): %s", System.getenv(postgresUserFile));
+        logInfoEnabled(logger, "System.getenv(POSTGRES_PASSWORD_FILE): %s", System.getenv(postgresPasswordFile));
+        logInfoEnabled(logger, "System.getenv(POSTGRES_DB_FILE): %s", System.getenv(postgresDbFile));
+        logInfoEnabled(logger, "System.getenv(DB_JDBC_ROOT_FILE): %s", System.getenv(dbJdbcRootFile));
+        logInfoEnabled(logger, "System.getenv(DB_USERNAME): %s", System.getenv(dbUsername));
+        logInfoEnabled(logger, "System.getenv(DB_PASSWORD): %s", System.getenv(dbPassword));
+        logInfoEnabled(logger, "System.getenv(DB_NAME): %s", System.getenv(dbName));
+
+
+        dataSourceBuilder.url(dbURL);
+        dataSourceBuilder.username(dbUSERNAME);
+        dataSourceBuilder.password(dbPASSWORD);
+        return dataSourceBuilder.build();
+
+    }
+	
+    /**
+     * A method used to extract a Docker secret from a Docker environment variable
+     * ( the Docker environment variables are not stored with the other account environment variables )
+     * @param 
+     * @return
+     */
+	public static String extractDockerSecretFromFile(String pathToSecret)
+	{	String secret=null;
+		try {			
+			secret = Files.readString(Paths.get(pathToSecret));
+			logInfoEnabled(logger,"Path to secret : %s",pathToSecret);
+			logInfoEnabled(logger,"Secret value extracted : %s",secret);
+		} catch (IOException e) {
+			logInfoEnabled(logger,"*** Caught an IOException in extractDockerSecretFromFile: %s",e.getLocalizedMessage());
+			//e.printStackTrace //suppressed to avoid a security hotspot.
+		}		
+		return secret;
+	}	
+	
+	public static void logInfoEnabled(Logger logger, String msg, String data)
+	{
+		if (logger.isInfoEnabled()) logger.info(String.format(msg, data));
+	}
+
+}
+

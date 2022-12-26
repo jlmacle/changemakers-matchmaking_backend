@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 
-
 /**
  * Class used to configure the application
  */
@@ -20,9 +19,8 @@ import org.springframework.context.annotation.Bean;
 public class Configuration {	
 	private static Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-
     /**
-     * Feeds some configuration information from environment variables.
+     * Retrieves database information and credentials from environment variables.
      * @return a DataSource object
      * https://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html (Java 8)
      */
@@ -119,6 +117,8 @@ public class Configuration {
 		}		
 		return secret;
 	}	
+	
+	//https://spring.io/blog/2015/06/08/cors-support-in-spring-framework
 	
 	public static void logInfoEnabled(Logger logger, String msg, String data)
 	{

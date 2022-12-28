@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Class used to configure the application
@@ -119,6 +121,30 @@ public class Configuration {
 	}	
 	
 	//https://spring.io/blog/2015/06/08/cors-support-in-spring-framework
+    /*
+     * No need for CORS configuration when running the backend with Docker
+     */
+	@Bean
+	public WebMvcConfigurer corsConfigurer()
+	{
+		return new WebMvcConfigurer() 
+		{	
+			@Override
+			public void addCorsMappings(CorsRegistry registry)
+			{
+                final String CORS_LOCALHOST_PORT_8080 = "http://127.0.0.1:8080";
+					
+				//Grid 4 				
+				String[] origins= {CORS_LOCALHOST_PORT_8080};
+
+				
+				//Mappings for the ProjectController				
+                registry.addMapping("/").allowedOrigins(origins).allowedMethods("*");	
+				registry.addMapping("/projects").allowedOrigins(origins).allowedMethods("*");	
+				
+			}
+		};
+	}
 	
 	public static void logInfoEnabled(Logger logger, String msg, String data)
 	{

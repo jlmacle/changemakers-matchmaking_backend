@@ -51,7 +51,31 @@
 			<version>42.5.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>7.10.1</version>
+			<scope>test</scope>
+		</dependency>	
+
+		<!-- 		
+		While it’s not required, we strongly recommend you include one of the dependency injection modules as well. 
+		This allows you to share state between step definitions without resorting to static variables 
+		(a common source of flickering scenarios). 
+		https://cucumber.io/docs/installation/java/ 
+		-->
+
+		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-spring -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>7.10.1</version>
+		</dependency>	
 	</dependencies>
+
+	
+
 
 	<build>
 		<plugins>

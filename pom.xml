@@ -65,7 +65,6 @@
 		(a common source of flickering scenarios). 
 		https://cucumber.io/docs/installation/java/ 
 		-->
-
 		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-spring -->
 		<dependency>
 			<groupId>io.cucumber</groupId>

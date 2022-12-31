@@ -26,12 +26,12 @@ services:
   backend:  
     depends_on:
       - postgresql
-    image: cm-back-end:v0.1
+    image: changemakers-matchmaking-backend:0.0.1-SNAPSHOT
     networks:
       - cm-network 
     ports:
-      - target: 8080
-        published: 8080           
+      - target: 8081
+        published: 8080    # 127.0.0.1:8080 queried      
     secrets:
       - DB_JDBC_ROOT
       - POSTGRES_DB

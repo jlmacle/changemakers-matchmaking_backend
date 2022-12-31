@@ -111,8 +111,8 @@ public class Configuration {
 	{	String secret=null;
 		try {			
 			secret = Files.readString(Paths.get(pathToSecret));
-			logInfoEnabled(logger,"Path to secret : %s",pathToSecret);
-			logInfoEnabled(logger,"Secret value extracted : %s",secret);
+			logInfoEnabled(logger,"Path to secret:%s",pathToSecret);
+			logInfoEnabled(logger,"Secret value extracted:%s",secret);
 		} catch (IOException e) {
 			logInfoEnabled(logger,"*** Caught an IOException in extractDockerSecretFromFile: %s",e.getLocalizedMessage());
 			//e.printStackTrace //suppressed to avoid a security hotspot.
@@ -124,6 +124,7 @@ public class Configuration {
     /*
      * No need for CORS configuration when running the backend with Docker
      */
+    
 	@Bean
 	public WebMvcConfigurer corsConfigurer()
 	{
@@ -132,20 +133,12 @@ public class Configuration {
 			@Override
 			public void addCorsMappings(CorsRegistry registry)
 			{
-                final String CORS_LOCALHOST_PORT_8080 = "http://127.0.0.1:8080";
-					
-				//Grid 4 				
-				String[] origins= {CORS_LOCALHOST_PORT_8080};
-
-				
-				//Mappings for the ProjectController				
-                registry.addMapping("/").allowedOrigins(origins).allowedMethods("*");	
-				registry.addMapping("/projects").allowedOrigins(origins).allowedMethods("*");	
-				
+                //useful for later
 			}
 		};
 	}
 	
+
 	public static void logInfoEnabled(Logger logger, String msg, String data)
 	{
 		if (logger.isInfoEnabled()) logger.info(String.format(msg, data));

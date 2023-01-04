@@ -133,8 +133,12 @@ public class Configuration {
 			@Override
 			public void addCorsMappings(CorsRegistry registry)
 			{
-                //useful for later
-			}
+                final String CORS_LOCALHOST_4200 = "http://localhost:4200";
+                String[] origins= {CORS_LOCALHOST_4200};
+                // TODO : to restrict the methods
+                registry.addMapping("/projects").allowedOrigins(origins).allowedMethods("*");
+            
+            }
 		};
 	}
 	

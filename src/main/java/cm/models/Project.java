@@ -14,10 +14,10 @@ public class Project implements Comparable<Object>
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="project_id")
-	private Integer projectId;
+	private Integer id;
 	
 	@Column(name="project_name")
-	private String projectName;
+	private String name;
 	
 	//  "The default constructor exists only for the sake of JPA. 
 	//  You do not use it directly, so it is designated as protected"
@@ -28,29 +28,29 @@ public class Project implements Comparable<Object>
 
 	public Project(Integer projectId, String projectName) {
 		super();
-		this.projectId = projectId;
-		this.projectName = projectName;
+		this.id = projectId;
+		this.name = projectName;
 	}
 
-	public Integer getProjectId() {
-		return projectId;
+	public Integer getId() {
+		return id;
 	}
 
-	public String getProjectName() {
-		return projectName;
+	public String getName() {
+		return name;
 	}
 	
-	public void setProjectId(Integer projectId) {
-		this.projectId = projectId;
+	public void setId(Integer projectId) {
+		this.id = projectId;
 	}
 
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setName(String projectName) {
+		this.name = projectName;
 	}
 
 	public int compareTo(Object object)
 	{
-		return this.getProjectName().compareTo( ((Project)object).getProjectName());
+		return this.getName().compareTo( ((Project)object).getName());
 	}
 	
 	
@@ -61,13 +61,13 @@ public class Project implements Comparable<Object>
 
 		if (object.getClass() != Project.class) {return false;}
 
-		return this.getProjectId().equals(((Project)object).getProjectId()) && this.getProjectName().equals(((Project)object).getProjectName());
+		return this.getId().equals(((Project)object).getId()) && this.getName().equals(((Project)object).getName());
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return this.getProjectId().hashCode() + 1000000*this.getProjectName().hashCode();
+		return this.getId().hashCode() + 1000000*this.getName().hashCode();
 	}
 	
 

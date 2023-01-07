@@ -133,8 +133,11 @@ public class Configuration {
 			@Override
 			public void addCorsMappings(CorsRegistry registry)
 			{
+                // When running the app without Docker
                 final String CORS_LOCALHOST_4200 = "http://localhost:4200";
-                String[] origins= {CORS_LOCALHOST_4200};
+                // When running the app with Docker
+                final String CORS_LOOPBACK = "http://127.0.0.1";
+                String[] origins= {CORS_LOCALHOST_4200,CORS_LOOPBACK};
                 // TODO : to restrict the methods
                 registry.addMapping("/projects").allowedOrigins(origins).allowedMethods("*");
             

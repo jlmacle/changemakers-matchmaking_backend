@@ -1,7 +1,8 @@
 echo off
 
 echo **** Starting the services (backend, PostgreSQL) with docker stack
-docker stack deploy -c ./docker-compose-stack-localImages.yml stack_localImages
+docker pull postgres:alpine
+docker stack deploy -c ./docker-compose-backend_stack-local_images.yml stack_localImages
 
 start dockerHub_push.bat
 

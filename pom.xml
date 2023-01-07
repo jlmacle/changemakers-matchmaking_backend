@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>cm</groupId>
 	<artifactId>changemakers-matchmaking-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>demo0</version>
 	<name>changemakers-matchmaking-backend</name>
 	<description>Backend for the changemakers matchmaking project</description>
 

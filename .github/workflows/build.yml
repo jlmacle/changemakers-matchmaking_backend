@@ -36,5 +36,5 @@ jobs:
           DB_USERNAME: "zcxcxc"
           DB_PASSWORD: "mnbn"
           DB_NAME: "hhj"
-          DB_JDBC_ROOT_FILE: "jdbc:postgresql://localhost:5433/"
+          DB_JDBC_ROOT_FILE: "jdbc:postgresql://localhost:5432/"
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=jlmacle_changemakers-matchmaking_backend
